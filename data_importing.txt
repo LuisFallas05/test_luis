@@ -1,0 +1,24 @@
+import pandas as pd
+import json
+x = open("C:/Users/luisf/Documents/Proyecto CDMX/Data/data_example.txt","r")
+y = x.read()
+print(y)
+data = json.loads(y)
+properties = pd.DataFrame(data)
+properties.dtypes
+pd.set_option('display.max_rows', None)
+properties['lat']
+properties['lat'] = properties['lat'].str.split(pat=",", expand=True)
+properties['lat'] = properties['lat'].str.split(pat="/", expand=True)
+properties['lat'] = properties['lat'].str.split(pat="w", expand=True)
+properties['lat'] = properties['lat'].replace('', np.nan).astype(float)
+properties.dtypes
+pd.set_option('display.max_rows', None)
+properties['lng']
+properties['lng'] = properties['lng'].str.split(pat=",", expand=True)
+properties['lng'] = properties['lng'].str.split(pat="m", expand=True)
+clean_lng = properties['lng'].str.split(pat=".",expand=True)
+clean_lng = clean_lng.astype('string')
+clean_lng = clean_lng.replace('', '0')
+properties['lng'] = clean_lng[[0,1]].agg('.'.join, axis=1)
+properties['lng']
